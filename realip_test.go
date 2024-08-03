@@ -1,4 +1,4 @@
-package plugindemo_test
+package traefikrealip_test
 
 import (
 	"context"
@@ -6,21 +6,16 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/traefik/plugindemo"
+	"github.com/NenoxAG/traefikrealip"
 )
 
-func TestDemo(t *testing.T) {
-	cfg := plugindemo.CreateConfig()
-	cfg.Headers["X-Host"] = "[[.Host]]"
-	cfg.Headers["X-Method"] = "[[.Method]]"
-	cfg.Headers["X-URL"] = "[[.URL]]"
-	cfg.Headers["X-URL"] = "[[.URL]]"
-	cfg.Headers["X-Demo"] = "test"
+func TestPlugin(t *testing.T) {
+	cfg := traefikrealip.CreateConfig()
 
 	ctx := context.Background()
 	next := http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {})
 
-	handler, err := plugindemo.New(ctx, next, cfg, "demo-plugin")
+	handler, err := traefikrealip.New(ctx, next, cfg, "traefikrealip")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -32,12 +27,11 @@ func TestDemo(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	req.Header.Set("X-Forwarded-For", "10.1.0.0, 10.2.0.0, 10.3.0.0")
+
 	handler.ServeHTTP(recorder, req)
 
-	assertHeader(t, req, "X-Host", "localhost")
-	assertHeader(t, req, "X-URL", "http://localhost")
-	assertHeader(t, req, "X-Method", "GET")
-	assertHeader(t, req, "X-Demo", "test")
+	assertHeader(t, req, "X-Real-Ip", "10.1.0.0")
 }
 
 func assertHeader(t *testing.T, req *http.Request, key, expected string) {

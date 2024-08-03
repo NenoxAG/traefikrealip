@@ -1,12 +1,8 @@
-displayName: Demo Plugin
+displayName: X-Real-IP from X-Forwarded-For
 type: middleware
-iconPath: .assets/icon.png
 
-import: github.com/traefik/plugindemo
+import: github.com/NenoxAG/traefikrealip
 
-summary: '[Demo] Add Request Header'
+summary: 'Sets the X-Real-IP header to the first entry of X-Forwarded-For'
 
 testData:
-  Headers:
-    X-Demo: test
-    X-URL: '{{URL}}'
