@@ -5,4 +5,4 @@ import: github.com/NenoxAG/traefikrealip
 
 summary: 'Sets the X-Real-IP header to the first entry of X-Forwarded-For'
 
-testData:
+testData: {}
