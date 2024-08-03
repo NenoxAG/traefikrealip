@@ -1,4 +1,3 @@
-// Package traefikrealip
 package traefikrealip
 
 import (
@@ -38,5 +37,5 @@ func (a *RealIpPlugin) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 			req.Header.Set("X-Real-IP", strings.TrimSpace(ips[0]))
 		}
 	}
-	m.next.ServeHTTP(rw, req)
+	a.next.ServeHTTP(rw, req)
 }
